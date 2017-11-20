@@ -39,6 +39,13 @@ body {
   flex: 0 0 auto;
   padding: $section-spacing;
 
+  .logo {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    padding: 10px;
+  }
+
   .site-title {
     font-family: "Abril Fatface", serif;
     font-weight: normal;
