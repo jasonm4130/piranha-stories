@@ -5,7 +5,7 @@ title: The Great Gummy War
 
 ‘Show me the film.’ I demanded. 
 
-On the screen before me, the picture came to life. The alien spacecraft, a large silver disk resting on the grass, opened and a ramp appeared. I gaped when I saw the creatures sliding to the bottom. One by one they emerged, slipping down the ramp like a slip and slide and the park. 
+On the screen before me, the picture came to life. The alien spacecraft, a large silver disk resting on the grass, opened and a ramp appeared. I gasped when I saw the creatures sliding to the bottom. One by one they emerged, slipping down the ramp like a slip and slide and the park. 
 
 It was undeniable. They were giant gummy bears. 
 
