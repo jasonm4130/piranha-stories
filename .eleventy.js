@@ -226,7 +226,12 @@ export default function(eleventyConfig) {
   
   // Copy static assets
   eleventyConfig.addPassthroughCopy("assets/img");
+  eleventyConfig.addPassthroughCopy("assets/css/prism.css");
   eleventyConfig.addPassthroughCopy("admin");
+  
+  // Copy favicons from root
+  eleventyConfig.addPassthroughCopy("favicon.ico");
+  eleventyConfig.addPassthroughCopy("favicon.png");
 
   // ============================================
   // LAYOUT ALIASES

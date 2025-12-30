@@ -1,0 +1,132 @@
+/**
+ * Prism.js syntax highlighting theme
+ * Based on Hydeout/Hyde color scheme for consistency with existing styles
+ * Used with @11ty/eleventy-plugin-syntaxhighlight
+ */
+
+/* Code blocks styled by Prism */
+pre[class*="language-"] {
+  padding: 1rem;
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  background-color: #f9f9f9;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+  -moz-tab-size: 2;
+  -o-tab-size: 2;
+  tab-size: 2;
+}
+
+code[class*="language-"] {
+  padding: 0;
+  font-size: 100%;
+  color: inherit;
+  background-color: transparent;
+  font-family: Menlo, Monaco, "Courier New", monospace;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: 0.25em 0.5em;
+  font-size: 85%;
+  color: #bf616a;
+  background-color: #f9f9f9;
+  border-radius: 3px;
+}
+
+/* Token styles - matching Hydeout Rouge theme colors */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #999;
+}
+
+.token.punctuation {
+  color: #555;
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #f60;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  color: #d44950;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #555;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #069;
+}
+
+.token.function,
+.token.class-name {
+  color: #c0f;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #3aa;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+/* Deleted/Inserted for diffs */
+.token.deleted {
+  background-color: #fcc;
+  color: #c00;
+}
+
+.token.inserted {
+  background-color: #cfc;
+  color: #0c0;
+}
+
+/* Line highlighting (if used) */
+.line-highlight {
+  background: rgba(255, 255, 0, 0.2);
+}
+
+/* Line numbers (if used) */
+.line-numbers .line-numbers-rows {
+  border-right: 1px solid #e5e5e5;
+}
+
+.line-numbers-rows > span:before {
+  color: #999;
+}
