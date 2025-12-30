@@ -3,14 +3,10 @@
     <input id="search-bar" type="search" name="q" />
 
     {% comment %}
-      Hacky strip of protocol to the sitesearch value we pass to Google
+      Hardcode the sitesearch value since we know the site URL
     {% endcomment %}
-    {% assign url = site.url | replace_first: 'https://', '' %}
-    {% assign url = url | replace_first: 'http://', '' %}
-    {% assign url = url | replace_first: 'spdy://', '' %}
-    {% assign url = url | replace_first: '//', '' %}
     <input name="sitesearch" type="hidden"
-           value="{{ url }}{{ site.baseurl }}" />
+           value="piranhastories.com" />
 
     <input type="submit" value="Search" />
   </div>

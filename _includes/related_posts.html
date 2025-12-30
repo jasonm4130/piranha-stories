@@ -1,15 +1,18 @@
 <section class="related">
   <h2>Related Posts</h2>
   <ul class="posts-list">
-    {% for post in site.related_posts limit:3 %}
+    {% assign recent_posts = collections.posts | limit: 4 %}
+    {% for relatedPost in recent_posts %}
+      {% if relatedPost.url != page.url %}
       <li>
         <h3>
-          <a href="{{ site.baseurl }}{{ post.url }}">
-            {{ post.title }}
-            <small>{{ post.date | date_to_string }}</small>
+          <a href="{{ site.baseurl }}{{ relatedPost.url }}">
+            {{ relatedPost.data.title }}
+            <small>{{ relatedPost.date | date_to_string }}</small>
           </a>
         </h3>
       </li>
+      {% endif %}
     {% endfor %}
   </ul>
 </section>

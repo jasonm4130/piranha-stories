@@ -3,33 +3,29 @@ layout: default
 ---
 
 <div class="content">
-  {% include pagination-newer.html %}
+  {% include "pagination-newer.html" %}
 
   {{ content }}
 
-  {% for post in paginator.posts %}
+  {% for post in pagination.items %}
   <article class="post-body">
     <h2 class="post-title">
       <a href="{{ site.baseurl }}{{ post.url }}">
-        {{ post.title }}
+        {{ post.data.title }}
       </a>
     </h2>
-    {% include post-meta.html post=post %}
+    {% include "post-meta.html" %}
 
-    {% if post.excerpt %}
-      {{ post.excerpt }}
+    {% if post.data.excerpt %}
+      {{ post.data.excerpt }}
     {% else %}
       {{ post.content }}
     {% endif %}
 
-    {% if post.excerpt %}
+    {% if post.data.excerpt %}
       {% comment %}Excerpt may be equal to content. Check.{% endcomment %}
-      {% capture content_words %}
-        {{ post.content | number_of_words }}
-      {% endcapture %}
-      {% capture excerpt_words %}
-        {{ post.excerpt | number_of_words }}
-      {% endcapture %}
+      {% assign content_words = post.content | number_of_words %}
+      {% assign excerpt_words = post.data.excerpt | number_of_words %}
 
       {% if content_words != excerpt_words %}
         <a href="{{ site.baseurl }}{{ post.url }}">More &hellip;</a>
@@ -38,5 +34,5 @@ layout: default
   </article>
   {% endfor %}
 
-  {% include pagination-older.html %}
+  {% include "pagination-older.html" %}
 </div>

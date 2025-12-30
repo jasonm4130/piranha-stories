@@ -1,4 +1,9 @@
 ---
 layout: index
 title: Home
+pagination:
+  data: collections.posts
+  size: 10
+  alias: posts
+permalink: "{% if pagination.pageNumber == 0 %}/{% else %}/page{{ pagination.pageNumber | plus: 1 }}/{% endif %}"
 ---

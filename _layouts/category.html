@@ -2,20 +2,22 @@
 layout: page
 ---
 
-{% unless page.content == '' %}
+{% unless content == '' %}
   {{ content }}
 {% endunless %}
 
 <ul class="posts-list">
-  {% assign category = page.category | default: page.title %}
-  {% for post in site.categories[category] %}
+  {% assign category = category | default: title %}
+  {% for post in collections.posts %}
+    {% if post.data.categories contains category %}
     <li>
       <h3>
         <a href="{{ site.baseurl }}{{ post.url }}">
-          {{ post.title }}
+          {{ post.data.title }}
           <small>{{ post.date | date_to_string }}</small>
         </a>
       </h3>
     </li>
+    {% endif %}
   {% endfor %}
 </ul>

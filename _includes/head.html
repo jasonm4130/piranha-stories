@@ -7,24 +7,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
 
   <title>
-    {% if page.title == "Home" %}
+    {% if title == "Home" %}
       {{ site.title }}{% if site.tagline %} &middot; {{ site.tagline }}{% endif %}
     {% else %}
-      {{ page.title }} &middot; {{ site.title }}
+      {{ title }} &middot; {{ site.title }}
     {% endif %}
   </title>
 
-  {% include google-analytics.html %}
+  {% include "google-analytics.html" %}
 
   <!-- CSS -->
   <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css" />
-  {% include font-includes.html %}
+  {% include "font-includes.html" %}
 
   <!-- Icons -->
-  {% include favicons.html %}
+  {% include "favicons.html" %}
 
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
 
-  {% include custom-head.html %}
+  {% include "custom-head.html" %}
 </head>

@@ -1,7 +1,7 @@
-{% if paginator.next_page %}
+{% if pagination.href.next %}
 <div class="pagination">
   <a class="pagination-item older"
-     href="{{ site.baseurl }}{{ paginator.next_page_path }}">
+     href="{{ site.baseurl }}{{ pagination.href.next }}">
     Older
   </a>
 </div>

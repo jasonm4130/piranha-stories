@@ -16,21 +16,13 @@ export default function(eleventyConfig) {
   eleventyConfig.ignores.add("*.gemspec");
   eleventyConfig.ignores.add("vendor/**");
   eleventyConfig.ignores.add("node_modules/**");
+  eleventyConfig.ignores.add("plans/**");
+  eleventyConfig.ignores.add("_sass/**");
+  eleventyConfig.ignores.add("_screenshots/**");
   
-  // Ignore Jekyll layouts and includes during Phase 1 (we'll migrate them in Phase 2)
-  // For now, we just want to confirm the build pipeline works
-  eleventyConfig.ignores.add("_layouts/**");
-  eleventyConfig.ignores.add("_includes/**");
-  eleventyConfig.ignores.add("_posts/**");
-  
-  // Ignore existing Jekyll pages that use incompatible Liquid syntax
-  eleventyConfig.ignores.add("index.html");
-  eleventyConfig.ignores.add("about.md");
-  eleventyConfig.ignores.add("404.html");
-  eleventyConfig.ignores.add("search.html");
+  // Subscribe page not needed in Eleventy (RSS handled by plugin)
   eleventyConfig.ignores.add("subscribe.html");
-  eleventyConfig.ignores.add("tags.html");
-  eleventyConfig.ignores.add("admin/**");
+  eleventyConfig.ignores.add("eleventy-test.html");
 
   // ============================================
   // PLUGINS
@@ -42,7 +34,7 @@ export default function(eleventyConfig) {
     outputPath: "/feed.xml",
     collection: {
       name: "posts",
-      limit: 10,
+      limit: 0,  // 0 = no limit, include all posts
     },
     metadata: {
       language: "en",
@@ -67,6 +59,54 @@ export default function(eleventyConfig) {
   eleventyConfig.addCollection("posts", function(collectionApi) {
     return collectionApi.getFilteredByGlob("_posts/**/*.md").sort((a, b) => {
       return b.date - a.date;
+    });
+  });
+
+  // Tags collection - returns an object with tag names as keys and arrays of posts as values
+  eleventyConfig.addCollection("tagList", function(collectionApi) {
+    const tagSet = new Set();
+    collectionApi.getAll().forEach(item => {
+      if (item.data.tags) {
+        item.data.tags.forEach(tag => {
+          if (tag !== "posts" && tag !== "all") {
+            tagSet.add(tag);
+          }
+        });
+      }
+    });
+    return [...tagSet].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  });
+
+  // Posts by tag - for use in templates
+  eleventyConfig.addCollection("postsByTag", function(collectionApi) {
+    const posts = collectionApi.getFilteredByGlob("_posts/**/*.md");
+    const tagMap = {};
+    
+    posts.forEach(post => {
+      if (post.data.tags) {
+        post.data.tags.forEach(tag => {
+          if (tag !== "posts" && tag !== "all") {
+            if (!tagMap[tag]) {
+              tagMap[tag] = [];
+            }
+            tagMap[tag].push(post);
+          }
+        });
+      }
+    });
+
+    // Sort posts within each tag by date (newest first)
+    for (const tag in tagMap) {
+      tagMap[tag].sort((a, b) => b.date - a.date);
+    }
+
+    return tagMap;
+  });
+
+  // Pages collection - for sidebar navigation
+  eleventyConfig.addCollection("sidebarPages", function(collectionApi) {
+    return collectionApi.getAll().filter(item => {
+      return item.data.sidebar_link === true;
     });
   });
 
@@ -96,6 +136,73 @@ export default function(eleventyConfig) {
     return result;
   });
 
+  // date_to_string filter (Jekyll compatibility) - "17 Nov 2017"
+  eleventyConfig.addFilter("date_to_string", function(date) {
+    const d = new Date(date);
+    const day = d.getDate();
+    const month = d.toLocaleDateString('en-US', { month: 'short' });
+    const year = d.getFullYear();
+    return `${day} ${month} ${year}`;
+  });
+
+  // number_of_words filter (Jekyll compatibility)
+  eleventyConfig.addFilter("number_of_words", function(content) {
+    if (!content) return 0;
+    return content.split(/\s+/).filter(word => word.length > 0).length;
+  });
+
+  // slugify filter for URL-safe strings
+  eleventyConfig.addFilter("slugify", function(str) {
+    if (!str) return '';
+    return str.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  });
+
+  // first filter - get first item or first n items from array
+  eleventyConfig.addFilter("first", function(arr, n) {
+    if (!arr) return arr;
+    if (n === undefined) {
+      return Array.isArray(arr) ? arr[0] : arr;
+    }
+    return arr.slice(0, n);
+  });
+
+  // last filter - get last item from array
+  eleventyConfig.addFilter("last", function(arr) {
+    if (!arr || !Array.isArray(arr)) return arr;
+    return arr[arr.length - 1];
+  });
+
+  // size filter - returns length of array or string
+  eleventyConfig.addFilter("size", function(arr) {
+    if (!arr) return 0;
+    return arr.length;
+  });
+
+  // where filter - filter array by property value
+  eleventyConfig.addFilter("where", function(arr, key, value) {
+    if (!arr) return [];
+    return arr.filter(item => {
+      const itemValue = item.data ? item.data[key] : item[key];
+      return itemValue === value;
+    });
+  });
+
+  // absolute_url filter - prepends site URL
+  eleventyConfig.addFilter("absolute_url", function(url) {
+    const siteUrl = "https://piranhastories.com";
+    if (!url) return siteUrl;
+    if (url.startsWith("http://") || url.startsWith("https://")) return url;
+    return siteUrl + url;
+  });
+
+  // replace_first filter (Jekyll compatibility)
+  eleventyConfig.addFilter("replace_first", function(str, search, replace) {
+    if (!str) return '';
+    return str.replace(search, replace || '');
+  });
+
   // XML escape filter for RSS
   eleventyConfig.addFilter("xmlEscape", function(str) {
     if (!str) return '';
@@ -105,6 +212,12 @@ export default function(eleventyConfig) {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  });
+
+  // limit filter - limit array to n items
+  eleventyConfig.addFilter("limit", function(arr, n) {
+    if (!arr) return [];
+    return arr.slice(0, n);
   });
 
   // ============================================
