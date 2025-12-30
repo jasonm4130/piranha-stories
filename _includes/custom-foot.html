@@ -1,5 +1,5 @@
 <!-- Optional footer content -->
-{% include "cloudflare-analytics.html" %}
+<!-- Cloudflare Web Analytics is auto-injected via Cloudflare Pages RUM -->
 
 <script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script>
 <script type="text/javascript">
@@ -10,15 +10,4 @@
             "lid": "4d3091b5c5"
         })
     })
-</script>
-<script>
-    if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-            if (!user) {
-                window.netlifyIdentity.on("login", () => {
-                    document.location.href = "/admin/";
-                });
-            }
-        });
-    }
 </script>
