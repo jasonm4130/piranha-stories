@@ -19,10 +19,10 @@
 
   <!-- Google Analytics removed - using Cloudflare Web Analytics instead -->
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css" />
+  <!-- CSS with content hashing for cache busting -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.{{ cssHash.main }}.css" />
   <!-- Prism.js syntax highlighting theme -->
-  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/prism.css" />
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/prism.{{ cssHash.prism }}.css" />
   {% include "font-includes.html" %}
 
   <!-- Icons -->

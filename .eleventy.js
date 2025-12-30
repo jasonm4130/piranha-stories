@@ -6,10 +6,95 @@ import cssnano from "cssnano";
 import purgecssModule from "@fullhuman/postcss-purgecss";
 import path from "path";
 import { fileURLToPath } from "url";
+import crypto from "crypto";
+import fs from "fs";
 
 const purgecss = purgecssModule.default || purgecssModule;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Store CSS content and hashes globally
+const cssData = {
+  main: { content: null, hash: null },
+  prism: { content: null, hash: null }
+};
+
+// Helper function to generate content hash
+function generateHash(content) {
+  return crypto.createHash("md5").update(content).digest("hex").slice(0, 8);
+}
+
+// Pre-compile CSS and compute hashes synchronously
+async function preCompileCSS() {
+  const isProduction = process.env.NODE_ENV === "production" || process.env.ELEVENTY_RUN_MODE === "build";
+  
+  // Compile main.scss
+  const scssPath = path.join(__dirname, "assets", "css", "main.scss");
+  if (fs.existsSync(scssPath)) {
+    const scssContent = fs.readFileSync(scssPath, "utf8");
+    
+    const result = sass.compileString(scssContent, {
+      loadPaths: [
+        path.join(__dirname, "_sass"),
+        path.join(__dirname, "assets", "css")
+      ],
+      style: "expanded",
+      sourceMap: false
+    });
+    
+    let css = result.css;
+    
+    if (isProduction) {
+      const postcssPlugins = [
+        purgecss({
+          content: [
+            "./_layouts/**/*.html",
+            "./_includes/**/*.html",
+            "./_posts/**/*.md",
+            "./*.html",
+            "./*.md"
+          ],
+          safelist: {
+            standard: [
+              /^hljs/, /^prism/, /^token/, /^language-/, /^code-/, /^line-/,
+              "sr-only", "visually-hidden"
+            ],
+            deep: [/^sidebar/, /^container/, /^content/],
+            greedy: []
+          },
+          fontFace: true,
+          keyframes: true
+        }),
+        cssnano({
+          preset: ['default', {
+            discardComments: { removeAll: true },
+            normalizeWhitespace: true
+          }]
+        })
+      ];
+      
+      const postcssResult = await postcss(postcssPlugins).process(css, { from: scssPath });
+      css = postcssResult.css;
+    }
+    
+    cssData.main.content = css;
+    cssData.main.hash = generateHash(css);
+  }
+  
+  // Read prism.css
+  const prismPath = path.join(__dirname, "assets", "css", "prism.css");
+  if (fs.existsSync(prismPath)) {
+    const prismContent = fs.readFileSync(prismPath, "utf8");
+    cssData.prism.content = prismContent;
+    cssData.prism.hash = generateHash(prismContent);
+  }
+  
+  console.log(`[CSS Hash] main.${cssData.main.hash}.css`);
+  console.log(`[CSS Hash] prism.${cssData.prism.hash}.css`);
+}
+
+// Run pre-compilation synchronously at module load
+await preCompileCSS();
 
 export default function(eleventyConfig) {
   // ============================================
@@ -65,104 +150,55 @@ export default function(eleventyConfig) {
   // SCSS COMPILATION WITH POSTCSS
   // ============================================
   
-  // Add SCSS as a template format
+  // Add SCSS as a template format (disabled - using pre-compiled CSS)
+  // We pre-compile CSS before Eleventy runs to ensure hashes are available for templates
   eleventyConfig.addTemplateFormats("scss");
   
-  // Configure SCSS compilation
+  // Configure SCSS to skip processing (we handle it in pre-compilation)
   eleventyConfig.addExtension("scss", {
     outputFileExtension: "css",
     
-    // Only compile the main entry file, not partials
     compileOptions: {
       permalink: function(contents, inputPath) {
-        // Skip partials (files starting with underscore)
-        if (path.basename(inputPath).startsWith("_")) {
-          return false;
-        }
-        // Skip files in _sass directory
-        if (inputPath.includes("_sass")) {
-          return false;
-        }
-        return undefined; // Use default permalink
+        // Skip all SCSS files - we handle CSS output in eleventy.after
+        return false;
       }
     },
     
     compile: async function(inputContent, inputPath) {
-      // Skip partials and _sass directory files
-      if (path.basename(inputPath).startsWith("_") || inputPath.includes("_sass")) {
-        return;
-      }
-      
-      // Compile SCSS to CSS
-      const result = sass.compileString(inputContent, {
-        loadPaths: [
-          path.join(__dirname, "_sass"),
-          path.dirname(inputPath)
-        ],
-        style: "expanded", // We'll minify with PostCSS
-        sourceMap: false
-      });
-      
-      // PostCSS plugins for optimization
-      const isProduction = process.env.NODE_ENV === "production" || process.env.ELEVENTY_RUN_MODE === "build";
-      
-      const postcssPlugins = [];
-      
-      if (isProduction) {
-        // PurgeCSS - remove unused CSS
-        postcssPlugins.push(
-          purgecss({
-            content: [
-              "./_layouts/**/*.html",
-              "./_includes/**/*.html",
-              "./_posts/**/*.md",
-              "./*.html",
-              "./*.md"
-            ],
-            // Safelist classes that might be dynamically added
-            safelist: {
-              standard: [
-                /^hljs/,        // Syntax highlighting
-                /^prism/,       // Prism syntax highlighting
-                /^token/,       // Prism tokens
-                /^language-/,   // Code language classes
-                /^code-/,       // Code blocks
-                /^line-/,       // Line numbers
-                "sr-only",      // Screen reader only
-                "visually-hidden"
-              ],
-              deep: [/^sidebar/, /^container/, /^content/],
-              greedy: []
-            },
-            // Keep font-face rules
-            fontFace: true,
-            // Keep keyframes
-            keyframes: true
-          })
-        );
-        
-        // cssnano - minify CSS
-        postcssPlugins.push(
-          cssnano({
-            preset: ['default', {
-              discardComments: { removeAll: true },
-              normalizeWhitespace: true
-            }]
-          })
-        );
-      }
-      
-      // Process with PostCSS if we have plugins
-      let css = result.css;
-      if (postcssPlugins.length > 0) {
-        const postcssResult = await postcss(postcssPlugins).process(css, { 
-          from: inputPath 
-        });
-        css = postcssResult.css;
-      }
-      
-      return async (data) => css;
+      // Skip all SCSS - we pre-compile
+      return;
     }
+  });
+  
+  // Write hashed CSS files after build
+  eleventyConfig.on("eleventy.after", async ({ dir }) => {
+    const cssDir = path.join(dir.output, "assets", "css");
+    
+    // Ensure CSS directory exists
+    if (!fs.existsSync(cssDir)) {
+      fs.mkdirSync(cssDir, { recursive: true });
+    }
+    
+    // Write main CSS with hash
+    if (cssData.main.content && cssData.main.hash) {
+      const hashedPath = path.join(cssDir, `main.${cssData.main.hash}.css`);
+      fs.writeFileSync(hashedPath, cssData.main.content);
+      console.log(`[CSS] Written main.${cssData.main.hash}.css`);
+    }
+    
+    // Write prism CSS with hash
+    if (cssData.prism.content && cssData.prism.hash) {
+      const hashedPath = path.join(cssDir, `prism.${cssData.prism.hash}.css`);
+      fs.writeFileSync(hashedPath, cssData.prism.content);
+      console.log(`[CSS] Written prism.${cssData.prism.hash}.css`);
+    }
+  });
+  
+  // Expose CSS hashes to templates via global data
+  eleventyConfig.addGlobalData("cssHash", {
+    main: cssData.main.hash,
+    prism: cssData.prism.hash
   });
 
   // ============================================
@@ -340,7 +376,7 @@ export default function(eleventyConfig) {
   
   // Copy static assets
   eleventyConfig.addPassthroughCopy("assets/img");
-  eleventyConfig.addPassthroughCopy("assets/css/prism.css");
+  // Note: prism.css is handled via CSS hashing, not passthrough
   eleventyConfig.addPassthroughCopy("admin");
   
   // Copy favicons from root
