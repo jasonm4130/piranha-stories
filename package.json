@@ -4,12 +4,8 @@
   "description": "A collection of short stories by Brian_AP",
   "type": "module",
   "scripts": {
-    "dev": "npm-run-all --parallel dev:*",
-    "dev:eleventy": "eleventy --serve",
-    "dev:sass": "sass --watch assets/css/main-eleventy.scss:_site/assets/css/main.css --load-path=_sass",
-    "build": "npm-run-all build:sass build:eleventy",
-    "build:sass": "sass assets/css/main-eleventy.scss:_site/assets/css/main.css --style=compressed --load-path=_sass",
-    "build:eleventy": "eleventy",
+    "dev": "eleventy --serve",
+    "build": "NODE_ENV=production eleventy",
     "clean": "rm -rf _site",
     "debug": "DEBUG=Eleventy* eleventy"
   },
@@ -24,7 +20,9 @@
     "@11ty/eleventy": "^3.0.0",
     "@11ty/eleventy-plugin-rss": "^2.0.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
-    "npm-run-all": "^4.1.5",
+    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "cssnano": "^7.1.2",
+    "postcss": "^8.5.6",
     "sass": "^1.83.0"
   }
 }

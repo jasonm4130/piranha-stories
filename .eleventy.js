@@ -1,5 +1,15 @@
 import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import * as sass from "sass";
+import postcss from "postcss";
+import cssnano from "cssnano";
+import purgecssModule from "@fullhuman/postcss-purgecss";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const purgecss = purgecssModule.default || purgecssModule;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default function(eleventyConfig) {
   // ============================================
@@ -50,6 +60,110 @@ export default function(eleventyConfig) {
 
   // Syntax Highlighting Plugin
   eleventyConfig.addPlugin(syntaxHighlight);
+
+  // ============================================
+  // SCSS COMPILATION WITH POSTCSS
+  // ============================================
+  
+  // Add SCSS as a template format
+  eleventyConfig.addTemplateFormats("scss");
+  
+  // Configure SCSS compilation
+  eleventyConfig.addExtension("scss", {
+    outputFileExtension: "css",
+    
+    // Only compile the main entry file, not partials
+    compileOptions: {
+      permalink: function(contents, inputPath) {
+        // Skip partials (files starting with underscore)
+        if (path.basename(inputPath).startsWith("_")) {
+          return false;
+        }
+        // Skip files in _sass directory
+        if (inputPath.includes("_sass")) {
+          return false;
+        }
+        return undefined; // Use default permalink
+      }
+    },
+    
+    compile: async function(inputContent, inputPath) {
+      // Skip partials and _sass directory files
+      if (path.basename(inputPath).startsWith("_") || inputPath.includes("_sass")) {
+        return;
+      }
+      
+      // Compile SCSS to CSS
+      const result = sass.compileString(inputContent, {
+        loadPaths: [
+          path.join(__dirname, "_sass"),
+          path.dirname(inputPath)
+        ],
+        style: "expanded", // We'll minify with PostCSS
+        sourceMap: false
+      });
+      
+      // PostCSS plugins for optimization
+      const isProduction = process.env.NODE_ENV === "production" || process.env.ELEVENTY_RUN_MODE === "build";
+      
+      const postcssPlugins = [];
+      
+      if (isProduction) {
+        // PurgeCSS - remove unused CSS
+        postcssPlugins.push(
+          purgecss({
+            content: [
+              "./_layouts/**/*.html",
+              "./_includes/**/*.html",
+              "./_posts/**/*.md",
+              "./*.html",
+              "./*.md"
+            ],
+            // Safelist classes that might be dynamically added
+            safelist: {
+              standard: [
+                /^hljs/,        // Syntax highlighting
+                /^prism/,       // Prism syntax highlighting
+                /^token/,       // Prism tokens
+                /^language-/,   // Code language classes
+                /^code-/,       // Code blocks
+                /^line-/,       // Line numbers
+                "sr-only",      // Screen reader only
+                "visually-hidden"
+              ],
+              deep: [/^sidebar/, /^container/, /^content/],
+              greedy: []
+            },
+            // Keep font-face rules
+            fontFace: true,
+            // Keep keyframes
+            keyframes: true
+          })
+        );
+        
+        // cssnano - minify CSS
+        postcssPlugins.push(
+          cssnano({
+            preset: ['default', {
+              discardComments: { removeAll: true },
+              normalizeWhitespace: true
+            }]
+          })
+        );
+      }
+      
+      // Process with PostCSS if we have plugins
+      let css = result.css;
+      if (postcssPlugins.length > 0) {
+        const postcssResult = await postcss(postcssPlugins).process(css, { 
+          from: inputPath 
+        });
+        css = postcssResult.css;
+      }
+      
+      return async (data) => css;
+    }
+  });
 
   // ============================================
   // COLLECTIONS
