@@ -3,6 +3,16 @@ _gh_pages
 _site
 .ruby-version
 
+# Node.js
+node_modules/
+package-lock.json
+npm-debug.log*
+.npm
+
+# Eleventy
+.cache/
+.eleventy.cache/
+
 # Numerous always-ignore extensions
 *.diff
 *.err

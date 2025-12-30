@@ -1,0 +1,18 @@
+{
+  "title": "Piranha Stories",
+  "tagline": "Short stories to brighten your day.",
+  "description": "A collection of stories by <a href=\"//www.reddit.com/user/Brian_AP\">Brian_AP</a>",
+  "url": "https://piranhastories.com",
+  "baseurl": "",
+  "timezone": "Australia/Brisbane",
+  "author": {
+    "name": "Brian_AP",
+    "url": "https://www.reddit.com/user/Brian_AP"
+  },
+  "paginate": 10,
+  "sidebar_home_link": true,
+  "google_analytics": "UA-109846768-1",
+  "disqus": {
+    "shortname": "piranhastories-com"
+  }
+}

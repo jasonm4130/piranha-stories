@@ -1,0 +1,30 @@
+{
+  "name": "piranha-stories",
+  "version": "1.0.0",
+  "description": "A collection of short stories by Brian_AP",
+  "type": "module",
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:eleventy": "eleventy --serve",
+    "dev:sass": "sass --watch assets/css/main-eleventy.scss:_site/assets/css/main.css --load-path=_sass",
+    "build": "npm-run-all build:sass build:eleventy",
+    "build:sass": "sass assets/css/main-eleventy.scss:_site/assets/css/main.css --style=compressed --load-path=_sass",
+    "build:eleventy": "eleventy",
+    "clean": "rm -rf _site",
+    "debug": "DEBUG=Eleventy* eleventy"
+  },
+  "keywords": [
+    "blog",
+    "stories",
+    "eleventy"
+  ],
+  "author": "Brian_AP",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-plugin-rss": "^2.0.2",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.83.0"
+  }
+}
