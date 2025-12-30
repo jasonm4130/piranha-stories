@@ -11,7 +11,7 @@
   },
   "paginate": 10,
   "sidebar_home_link": true,
-  "google_analytics": "UA-109846768-1",
+  "cloudflare_analytics_token": "YOUR_CLOUDFLARE_ANALYTICS_TOKEN_HERE",
   "disqus": {
     "shortname": "piranhastories-com"
   }
