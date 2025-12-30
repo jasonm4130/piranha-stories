@@ -5,6 +5,10 @@
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  X-XSS-Protection: 1; mode=block
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless
 
 # Cache static assets
 /assets/*
@@ -12,4 +16,8 @@
 
 # Cache images
 /assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache fonts
+/assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
