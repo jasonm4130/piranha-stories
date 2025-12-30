@@ -232,6 +232,10 @@ export default function(eleventyConfig) {
   // Copy favicons from root
   eleventyConfig.addPassthroughCopy("favicon.ico");
   eleventyConfig.addPassthroughCopy("favicon.png");
+  
+  // Copy Cloudflare Pages config files
+  eleventyConfig.addPassthroughCopy("_redirects");
+  eleventyConfig.addPassthroughCopy("_headers");
 
   // ============================================
   // LAYOUT ALIASES

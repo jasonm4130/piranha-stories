@@ -1,0 +1,8 @@
+# Cloudflare Pages configuration
+# This file is optional - Cloudflare Pages can also be configured via dashboard
+
+name = "piranha-stories"
+compatibility_date = "2024-01-01"
+
+# Pages-specific settings are configured in the Cloudflare dashboard
+# This file is primarily for Workers integration if needed later

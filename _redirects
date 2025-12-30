@@ -1,0 +1,8 @@
+# Redirects for Cloudflare Pages
+# Format: /old-path /new-path [status-code]
+
+# Preserve old Jekyll feed URL if it was different
+/atom.xml /feed.xml 301
+
+# Handle any potential trailing slash issues
+# Cloudflare Pages handles trailing slashes automatically
