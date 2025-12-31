@@ -1,5 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import PostMeta from '@components/PostMeta.astro';
+import PostTags from '@components/PostTags.astro';
+import Comments from '@components/Comments.astro';
+import RelatedPosts from '@components/RelatedPosts.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -8,16 +12,6 @@ interface Props {
 
 const { post } = Astro.props;
 const { title, date, tags, categories } = post.data;
-
-const formattedDate = date ? date.toLocaleDateString('en-US', {
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric'
-}) : '';
-
-function slugify(str: string): string {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
 ---
 
 <BaseLayout title={title} layout="post">
@@ -26,52 +20,14 @@ function slugify(str: string): string {
   </header>
   
   <div class="content">
-    <div class="post-meta">
-      {formattedDate && <span class="post-date">{formattedDate}</span>}
-      {categories && categories.length > 0 && (
-        <span class="post-categories">
-          {categories.map((category) => (
-            <>&bull; {category}</>
-          ))}
-        </span>
-      )}
-    </div>
+    {date && <PostMeta date={date} categories={categories} />}
     
     <div class="post-body">
       <slot />
-      
-      {tags && tags.length > 0 && (
-        <div class="post-tags">
-          {tags.map((tag) => (
-            <a href={`/tags/#${slugify(tag)}`}>
-              <span class="icon">🏷️</span>
-              <span class="tag-name">{tag}</span>
-            </a>
-          ))}
-        </div>
-      )}
+      <PostTags tags={tags} />
     </div>
     
-    <!-- Disqus Comments -->
-    <section id="disqus_thread"></section>
-    <script is:inline>
-      var disqus_config = function () {
-        this.page.url = window.location.href;
-        this.page.identifier = window.location.pathname;
-      };
-      
-      (function() {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://piranhastories-com.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-      })();
-    </script>
-    
-    <!-- Related Posts -->
-    <section class="related">
-      <h2>Related Posts</h2>
-      <p><em>More stories coming soon...</em></p>
-    </section>
+    <Comments />
+    <RelatedPosts currentSlug={post.slug} />
   </div>
 </BaseLayout>

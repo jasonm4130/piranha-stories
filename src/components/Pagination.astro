@@ -1,0 +1,14 @@
+---
+interface Props {
+  href: string;
+  direction: 'newer' | 'older';
+}
+
+const { href, direction } = Astro.props;
+---
+
+<div class="pagination">
+  <a class={`pagination-item ${direction}`} href={href}>
+    {direction === 'newer' ? 'Newer' : 'Older'}
+  </a>
+</div>

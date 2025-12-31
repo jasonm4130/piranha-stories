@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+
+const allPosts = await getCollection('posts');
+const recentPosts = allPosts
+  .filter(post => post.data.date) // Only posts with dates
+  .sort((a, b) => (b.data.date?.getTime() || 0) - (a.data.date?.getTime() || 0))
+  .filter(post => post.slug !== currentSlug)
+  .slice(0, 3);
+
+const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric'
+});
+---
+
+<section class="related">
+  <h2>Related Posts</h2>
+  {recentPosts.length > 0 ? (
+    <ul class="posts-list">
+      {recentPosts.map((post) => (
+        <li>
+          <h3>
+            <a href={`/${post.slug}/`}>
+              {post.data.title}
+              {post.data.date && <small>{formatDate(post.data.date)}</small>}
+            </a>
+          </h3>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p><em>No related posts found.</em></p>
+  )}
+</section>
