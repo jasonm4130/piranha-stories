@@ -2,7 +2,10 @@
 # https://developers.cloudflare.com/pages/functions/wrangler-configuration/
 
 name = "piranha-stories"
-compatibility_date = "2024-12-01"
+
+# Updated to 2025-08-15 for native MessageChannel support (required for React 19 SSR)
+# https://github.com/cloudflare/workerd/pull/3336
+compatibility_date = "2025-08-15"
 
 # nodejs_compat_v2 includes MessageChannel and other Node.js APIs needed for React SSR
 compatibility_flags = ["nodejs_compat_v2"]
