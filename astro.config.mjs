@@ -24,7 +24,7 @@ export default defineConfig({
     keystatic(),
   ],
 
-  // SCSS support is built-in with Astro
+  // Vite configuration for Cloudflare Workers compatibility
   vite: {
     css: {
       preprocessorOptions: {
@@ -32,6 +32,14 @@ export default defineConfig({
           // Add any global SCSS options here if needed
         },
       },
+    },
+    ssr: {
+      // Externalize Node.js modules for Cloudflare Workers
+      external: ['node:buffer', 'node:async_hooks'],
+    },
+    resolve: {
+      // Use Cloudflare-compatible conditions
+      conditions: ['workerd', 'worker', 'browser'],
     },
   },
 });
