@@ -41,14 +41,13 @@ export default config({
       slugField: 'title',
       path: 'src/content/posts/*',
       format: { contentField: 'content' },
-      entryLayout: 'content',
       schema: {
         title: fields.slug({
           name: { label: 'Title' },
         }),
-        date: fields.datetime({
+        date: fields.date({
           label: 'Date',
-          defaultValue: { kind: 'now' },
+          defaultValue: { kind: 'today' },
         }),
         excerpt: fields.text({
           label: 'Excerpt',
@@ -62,14 +61,8 @@ export default config({
           label: 'Categories',
           itemLabel: (props) => props.value,
         }),
-        content: fields.mdx({
+        content: fields.markdoc({
           label: 'Content',
-          options: {
-            image: {
-              directory: 'public/images/posts',
-              publicPath: '/images/posts/',
-            },
-          },
         }),
       },
     }),
@@ -79,7 +72,6 @@ export default config({
       slugField: 'title',
       path: 'src/content/pages/*',
       format: { contentField: 'content' },
-      entryLayout: 'content',
       schema: {
         title: fields.slug({
           name: { label: 'Title' },
@@ -88,14 +80,8 @@ export default config({
           label: 'Show in Sidebar',
           defaultValue: false,
         }),
-        content: fields.mdx({
+        content: fields.markdoc({
           label: 'Content',
-          options: {
-            image: {
-              directory: 'public/images/pages',
-              publicPath: '/images/pages/',
-            },
-          },
         }),
       },
     }),
