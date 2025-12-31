@@ -12,6 +12,12 @@ interface Props {
 
 const { post } = Astro.props;
 const { title, date, tags, categories } = post.data;
+
+function getSlug(id: string): string {
+  return id.replace(/\.md$/, '');
+}
+
+const slug = getSlug(post.id);
 ---
 
 <BaseLayout title={title} layout="post">
@@ -28,6 +34,6 @@ const { title, date, tags, categories } = post.data;
     </div>
     
     <Comments />
-    <RelatedPosts currentSlug={post.slug} />
+    <RelatedPosts currentSlug={slug} />
   </div>
 </BaseLayout>

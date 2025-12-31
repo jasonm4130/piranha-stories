@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import IndexLayout from '@layouts/IndexLayout.astro';
+
+// Get all posts sorted by date (newest first)
+const allPosts = await getCollection('posts');
+const sortedPosts = allPosts
+  .filter((post) => post.data.date)
+  .sort((a, b) => (b.data.date?.getTime() || 0) - (a.data.date?.getTime() || 0));
+
+// Pagination settings
+const postsPerPage = 5;
+const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+const currentPage = 1;
+const paginatedPosts = sortedPosts.slice(0, postsPerPage);
+
+// Build page data object for IndexLayout
+const page = {
+  data: paginatedPosts,
+  currentPage,
+  lastPage: totalPages,
+  url: {
+    prev: null,
+    next: totalPages > 1 ? '/page/2/' : null,
+  },
+};
+---
+
+<IndexLayout page={page} />

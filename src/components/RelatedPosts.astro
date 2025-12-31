@@ -7,11 +7,15 @@ interface Props {
 
 const { currentSlug } = Astro.props;
 
+function getSlug(id: string): string {
+  return id.replace(/\.md$/, '');
+}
+
 const allPosts = await getCollection('posts');
 const recentPosts = allPosts
   .filter(post => post.data.date) // Only posts with dates
   .sort((a, b) => (b.data.date?.getTime() || 0) - (a.data.date?.getTime() || 0))
-  .filter(post => post.slug !== currentSlug)
+  .filter(post => getSlug(post.id) !== currentSlug)
   .slice(0, 3);
 
 const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
@@ -28,7 +32,7 @@ const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
       {recentPosts.map((post) => (
         <li>
           <h3>
-            <a href={`/${post.slug}/`}>
+            <a href={`/${getSlug(post.id)}/`}>
               {post.data.title}
               {post.data.date && <small>{formatDate(post.data.date)}</small>}
             </a>

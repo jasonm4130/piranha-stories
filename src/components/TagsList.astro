@@ -27,6 +27,10 @@ function slugify(str: string): string {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
+function getSlug(id: string): string {
+  return id.replace(/\.md$/, '');
+}
+
 const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
   day: 'numeric',
   month: 'short',
@@ -59,7 +63,7 @@ const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
                 .map((post) => (
                   <li>
                     <h3>
-                      <a href={`/${post.slug}/`}>
+                      <a href={`/${getSlug(post.id)}/`}>
                         {post.data.title}
                         {post.data.date && <small>{formatDate(post.data.date)}</small>}
                       </a>

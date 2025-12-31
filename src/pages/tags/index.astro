@@ -1,0 +1,11 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import TagsList from '@components/TagsList.astro';
+
+const posts = await getCollection('posts');
+---
+
+<PageLayout title="Tags">
+  <TagsList posts={posts} />
+</PageLayout>

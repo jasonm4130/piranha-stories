@@ -25,6 +25,10 @@ function formatDate(date: Date): string {
     year: 'numeric'
   });
 }
+
+function getSlug(id: string): string {
+  return id.replace(/\.md$/, '');
+}
 ---
 
 <BaseLayout title="Home" layout="index">
@@ -42,7 +46,7 @@ function formatDate(date: Date): string {
     {page.data.map((post) => (
       <article class="post-body">
         <h2 class="post-title">
-          <a href={`/${post.slug}/`}>{post.data.title}</a>
+          <a href={`/${getSlug(post.id)}/`}>{post.data.title}</a>
         </h2>
         <div class="post-meta">
           {post.data.date && <span class="post-date">{formatDate(post.data.date)}</span>}
@@ -58,12 +62,12 @@ function formatDate(date: Date): string {
         {post.data.excerpt ? (
           <>
             <p set:html={post.data.excerpt} />
-            <a href={`/${post.slug}/`}>More &hellip;</a>
+            <a href={`/${getSlug(post.id)}/`}>More &hellip;</a>
           </>
         ) : (
           <>
             <p set:html={post.body?.slice(0, 500) + '...'} />
-            <a href={`/${post.slug}/`}>More &hellip;</a>
+            <a href={`/${getSlug(post.id)}/`}>More &hellip;</a>
           </>
         )}
       </article>

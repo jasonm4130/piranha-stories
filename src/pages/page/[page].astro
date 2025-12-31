@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import IndexLayout from '@layouts/IndexLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts');
+  const sortedPosts = allPosts
+    .filter((post) => post.data.date)
+    .sort((a, b) => (b.data.date?.getTime() || 0) - (a.data.date?.getTime() || 0));
+
+  const postsPerPage = 5;
+  const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+  
+  // Generate paths for pages 2 onwards (page 1 is handled by index.astro)
+  const paths = [];
+  for (let i = 2; i <= totalPages; i++) {
+    const startIndex = (i - 1) * postsPerPage;
+    const endIndex = startIndex + postsPerPage;
+    
+    paths.push({
+      params: { page: String(i) },
+      props: {
+        page: {
+          data: sortedPosts.slice(startIndex, endIndex),
+          currentPage: i,
+          lastPage: totalPages,
+          url: {
+            prev: i === 2 ? '/' : `/page/${i - 1}/`,
+            next: i < totalPages ? `/page/${i + 1}/` : null,
+          },
+        },
+      },
+    });
+  }
+  
+  return paths;
+}
+
+interface Props {
+  page: {
+    data: Awaited<ReturnType<typeof getCollection<'posts'>>>;
+    currentPage: number;
+    lastPage: number;
+    url: {
+      prev: string | null;
+      next: string | null;
+    };
+  };
+}
+
+const { page } = Astro.props;
+---
+
+<IndexLayout page={page} />

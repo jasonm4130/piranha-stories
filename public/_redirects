@@ -1,0 +1,36 @@
+# Cloudflare Pages 301 Redirects
+# Old Jekyll date-based URLs → New clean URLs
+
+# 2017 Posts
+/2017/11/17/Hunt-for-the-Dragon-Emperor/ /hunt-for-the-dragon-emperor/ 301
+/2017/11/17/hunt-for-the-dragon-emperor/ /hunt-for-the-dragon-emperor/ 301
+/2017/11/18/The-Recorder/ /the-recorder/ 301
+/2017/11/18/the-recorder/ /the-recorder/ 301
+/2017/11/19/number-238993/ /number-238993/ 301
+/2017/11/19/Society-for-the-Conservation-of-Sentient-Beings/ /society-for-the-conservation-of-sentient-beings/ 301
+/2017/11/19/society-for-the-conservation-of-sentient-beings/ /society-for-the-conservation-of-sentient-beings/ 301
+/2017/11/19/The-AI-Disappear/ /the-ai-disappear/ 301
+/2017/11/19/the-ai-disappear/ /the-ai-disappear/ 301
+/2017/11/19/The-Snake-Charmer/ /the-snake-charmer/ 301
+/2017/11/19/the-snake-charmer/ /the-snake-charmer/ 301
+/2017/11/20/A-Willing-Soul/ /a-willing-soul/ 301
+/2017/11/20/a-willing-soul/ /a-willing-soul/ 301
+/2017/11/21/The-Boogey-Man-Escapes/ /the-boogey-man-escapes/ 301
+/2017/11/21/the-boogey-man-escapes/ /the-boogey-man-escapes/ 301
+/2017/11/22/The-Eldritch-Horror/ /the-eldritch-horror/ 301
+/2017/11/22/the-eldritch-horror/ /the-eldritch-horror/ 301
+/2017/11/24/In-the-Garden-with-Lucy/ /in-the-garden-with-lucy/ 301
+/2017/11/24/in-the-garden-with-lucy/ /in-the-garden-with-lucy/ 301
+/2017/11/25/A-Date-Across-Dimensions/ /a-date-across-dimensions/ 301
+/2017/11/25/a-date-across-dimensions/ /a-date-across-dimensions/ 301
+/2017/11/25/The-Great-Gummy-War/ /the-great-gummy-war/ 301
+/2017/11/25/the-great-gummy-war/ /the-great-gummy-war/ 301
+
+# 2018 Posts
+/2018/02/09/judgement-day/ /judgement-day/ 301
+
+# Old pagination URLs (Jekyll used /page2/, /page3/, etc.)
+/page2/ /page/2/ 301
+/page3/ /page/3/ 301
+
+# Trailing slash handling - Cloudflare handles this automatically
