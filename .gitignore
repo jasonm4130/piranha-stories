@@ -13,6 +13,10 @@ npm-debug.log*
 .cache/
 .eleventy.cache/
 
+# Astro
+dist/
+.astro/
+
 # Numerous always-ignore extensions
 *.diff
 *.err
