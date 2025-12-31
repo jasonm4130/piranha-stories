@@ -3,7 +3,9 @@
 
 name = "piranha-stories"
 compatibility_date = "2024-12-01"
-compatibility_flags = ["nodejs_compat"]
+
+# nodejs_compat_v2 includes MessageChannel and other Node.js APIs needed for React SSR
+compatibility_flags = ["nodejs_compat_v2"]
 
 # Pages build output directory
 pages_build_output_dir = "dist"
