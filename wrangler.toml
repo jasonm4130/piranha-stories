@@ -1,9 +1,10 @@
 # Cloudflare Pages configuration
 name = "piranha-stories"
 compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
 
-# Pages build configuration
-pages_build_output_dir = "_site"
+# Pages build configuration (Astro outputs to dist/)
+pages_build_output_dir = "dist"
 
 [vars]
 NODE_VERSION = "20"

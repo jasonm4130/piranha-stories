@@ -1,28 +1,36 @@
 {
   "name": "piranha-stories",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A collection of short stories by Brian_AP",
   "type": "module",
   "scripts": {
-    "dev": "eleventy --serve",
-    "build": "NODE_ENV=production eleventy",
-    "clean": "rm -rf _site",
-    "debug": "DEBUG=Eleventy* eleventy"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
   },
   "keywords": [
     "blog",
     "stories",
-    "eleventy"
+    "astro",
+    "keystatic"
   ],
   "author": "Brian_AP",
   "license": "MIT",
-  "devDependencies": {
-    "@11ty/eleventy": "^3.0.0",
-    "@11ty/eleventy-plugin-rss": "^2.0.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
-    "@fullhuman/postcss-purgecss": "^7.0.2",
-    "cssnano": "^7.1.2",
-    "postcss": "^8.5.6",
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.0.0",
+    "@astrojs/react": "^4.2.0",
+    "@astrojs/rss": "^4.0.11",
+    "@keystatic/astro": "^5.0.1",
+    "@keystatic/core": "^0.5.46",
+    "astro": "^5.1.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sass": "^1.83.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "typescript": "^5.9.3"
   }
 }
