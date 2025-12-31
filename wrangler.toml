@@ -1,10 +1,32 @@
-# Cloudflare Pages configuration
+# Cloudflare Pages configuration for Piranha Stories
+# https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+
 name = "piranha-stories"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-# Pages build configuration (Astro outputs to dist/)
+# Pages build configuration
 pages_build_output_dir = "dist"
 
+# Build settings
+[build]
+command = "npm run build"
+
+# Environment variables
 [vars]
 NODE_VERSION = "20"
+
+# KV Namespace binding for Astro sessions (optional)
+# The @astrojs/cloudflare adapter automatically looks for a "SESSION" binding
+# Uncomment and configure if you need server-side sessions
+# [[kv_namespaces]]
+# binding = "SESSION"
+# id = "<your-kv-namespace-id>"
+
+# Production environment overrides
+[env.production]
+# Add production-specific settings here if needed
+
+# Preview/staging environment
+[env.preview]
+# Add preview-specific settings here if needed
