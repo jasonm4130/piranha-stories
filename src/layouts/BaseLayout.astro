@@ -43,7 +43,7 @@ const isHome = Astro.url.pathname === '/';
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" />
     
     <slot name="head" />
   </head>
@@ -86,24 +86,22 @@ const isHome = Astro.url.pathname === '/';
         
         <nav id="sidebar-icon-links">
           <a id="subscribe-link" class="icon" href="/feed.xml" title="RSS Feed">
-            <svg fill="#000000" height="24px" width="24px" viewBox="0 0 455.731 455.731">
-              <path d="M0,0v455.731h455.731V0H0z M296.208,385.476c0-66.846-26.03-129.696-73.297-176.966
-                c-47.266-47.265-110.118-73.296-176.966-73.296V91.953c161.874,0,293.523,131.645,293.523,293.523H296.208z M176.78,385.476
-                c0-66.846-54.412-121.258-121.258-121.258v-43.261c90.673,0,164.519,73.844,164.519,164.519H176.78z M107.165,350.238
-                c0-19.494-15.809-35.303-35.303-35.303s-35.303,15.809-35.303,35.303s15.809,35.303,35.303,35.303
-                S107.165,369.732,107.165,350.238z"/>
+            <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <circle cx="6.18" cy="17.82" r="2.18"/>
+              <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/>
             </svg>
           </a>
           <a id="tags-link" class="icon" href="/tags/" title="Tags">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
-              <path d="M12 2l10 10-10 10L2 12 12 2z"/>
-              <circle cx="12" cy="12" r="3"/>
+            <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
             </svg>
           </a>
           <a id="search-link" class="icon" href="/search/" title="Search">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
-              <circle cx="11" cy="11" r="8"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
             </svg>
           </a>
         </nav>
