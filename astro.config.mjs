@@ -7,7 +7,7 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://piranhastories.com',
 
-  // Static output (default in Astro 5.x, with per-route SSR opt-in)
+  // Static output with per-route SSR for Keystatic (Astro 5.x)
   output: 'static',
 
   // Cloudflare Pages adapter

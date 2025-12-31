@@ -1,10 +1,30 @@
 import { config, fields, collection } from '@keystatic/core';
 
+/**
+ * Keystatic CMS Configuration
+ * 
+ * Storage modes:
+ * - Development: Uses 'local' storage (files saved directly to disk)
+ * - Production: Uses 'github' storage (commits to GitHub repo)
+ * 
+ * Required environment variables for production (GitHub mode):
+ * - KEYSTATIC_GITHUB_CLIENT_ID: GitHub App client ID
+ * - KEYSTATIC_GITHUB_CLIENT_SECRET: GitHub App client secret
+ * - KEYSTATIC_SECRET: Secret for signing tokens
+ * - PUBLIC_KEYSTATIC_GITHUB_APP_SLUG: GitHub App slug name
+ * 
+ * These are auto-generated when you first connect to GitHub from /keystatic
+ */
+
 // Determine storage based on environment
-const storage =
-  process.env.NODE_ENV === 'production'
-    ? { kind: 'github' as const, repo: 'jasonm4130/piranha-stories' as const }
-    : { kind: 'local' as const };
+const isProd = import.meta.env.PROD;
+
+const storage = isProd
+  ? {
+      kind: 'github' as const,
+      repo: 'jasonm4130/piranha-stories' as `${string}/${string}`,
+    }
+  : { kind: 'local' as const };
 
 export default config({
   storage,
@@ -21,6 +41,7 @@ export default config({
       slugField: 'title',
       path: 'src/content/posts/*',
       format: { contentField: 'content' },
+      entryLayout: 'content',
       schema: {
         title: fields.slug({
           name: { label: 'Title' },
@@ -43,6 +64,12 @@ export default config({
         }),
         content: fields.mdx({
           label: 'Content',
+          options: {
+            image: {
+              directory: 'public/images/posts',
+              publicPath: '/images/posts/',
+            },
+          },
         }),
       },
     }),
@@ -52,6 +79,7 @@ export default config({
       slugField: 'title',
       path: 'src/content/pages/*',
       format: { contentField: 'content' },
+      entryLayout: 'content',
       schema: {
         title: fields.slug({
           name: { label: 'Title' },
@@ -62,6 +90,12 @@ export default config({
         }),
         content: fields.mdx({
           label: 'Content',
+          options: {
+            image: {
+              directory: 'public/images/pages',
+              publicPath: '/images/pages/',
+            },
+          },
         }),
       },
     }),
