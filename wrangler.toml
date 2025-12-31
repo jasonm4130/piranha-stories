@@ -5,16 +5,12 @@ name = "piranha-stories"
 compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-# Pages build configuration
+# Pages build output directory
 pages_build_output_dir = "dist"
 
-# Build settings
-[build]
-command = "npm run build"
-
-# Environment variables
-[vars]
-NODE_VERSION = "20"
+# Note: Build command is configured in Cloudflare Pages dashboard, not here
+# Set build command to: npm run build
+# Set output directory to: dist
 
 # KV Namespace binding for Astro sessions (optional)
 # The @astrojs/cloudflare adapter automatically looks for a "SESSION" binding
@@ -22,11 +18,3 @@ NODE_VERSION = "20"
 # [[kv_namespaces]]
 # binding = "SESSION"
 # id = "<your-kv-namespace-id>"
-
-# Production environment overrides
-[env.production]
-# Add production-specific settings here if needed
-
-# Preview/staging environment
-[env.preview]
-# Add preview-specific settings here if needed
