@@ -36,10 +36,16 @@ export default defineConfig({
     ssr: {
       // Externalize Node.js modules for Cloudflare Workers
       external: ['node:buffer', 'node:async_hooks'],
+      // Don't externalize react - let it bundle with edge conditions
+      noExternal: ['react', 'react-dom'],
     },
     resolve: {
-      // Use Cloudflare-compatible conditions
-      conditions: ['workerd', 'worker', 'browser'],
+      // Use Cloudflare-compatible conditions - 'react-server' helps with SSR
+      conditions: ['workerd', 'worker', 'browser', 'import', 'module'],
+    },
+    optimizeDeps: {
+      // Exclude react from pre-bundling to use correct exports
+      exclude: ['@keystatic/core', '@keystatic/astro'],
     },
   },
 });
