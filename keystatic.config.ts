@@ -63,6 +63,7 @@ export default config({
         }),
         content: fields.markdoc({
           label: 'Content',
+          extension: 'md',
         }),
       },
     }),
@@ -82,6 +83,7 @@ export default config({
         }),
         content: fields.markdoc({
           label: 'Content',
+          extension: 'md',
         }),
       },
     }),
