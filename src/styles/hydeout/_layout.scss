@@ -22,13 +22,15 @@
   we want the sidebar or header to stretch.
 */
 
+@use "variables" as *;
+
 body {
   color: rgba(255,255,255,.75);
   background-color: $sidebar-bg-color;
   background-image: linear-gradient(
     to bottom,
-    lighten($sidebar-bg-color, 7%),
-    darken($sidebar-bg-color, 7%));
+    $sidebar-bg-light,
+    $sidebar-bg-dark);
   display: flex;
   flex-direction: column;
   min-width: 100vw;

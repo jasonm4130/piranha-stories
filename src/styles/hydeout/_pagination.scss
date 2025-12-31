@@ -6,6 +6,8 @@
   of each page.
 */
 
+@use "variables" as *;
+
 .pagination {
   margin-bottom: $section-spacing;
   color: $gray-3;

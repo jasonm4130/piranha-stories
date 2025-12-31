@@ -3,19 +3,18 @@
   Based on https://github.com/poole/poole
   Designed, built, and released under MIT license by @mdo.
   
-  Using @import (deprecated but simpler) for this migration.
-  Modern @use/@forward would require significant refactoring.
+  Modernized to use @use/@forward syntax for Dart Sass 3.0 compatibility.
 */
 
-@import "hydeout/variables";
-@import "hydeout/base";
-@import "hydeout/type";
-@import "hydeout/syntax";
-@import "hydeout/code";
-@import "hydeout/layout";
-@import "hydeout/masthead";
-@import "hydeout/posts";
-@import "hydeout/pagination";
-@import "hydeout/message";
-@import "hydeout/search";
-@import "hydeout/tags";
+@use "hydeout/variables" as *;
+@use "hydeout/base";
+@use "hydeout/type";
+@use "hydeout/syntax";
+@use "hydeout/code";
+@use "hydeout/layout";
+@use "hydeout/masthead";
+@use "hydeout/posts";
+@use "hydeout/pagination";
+@use "hydeout/message";
+@use "hydeout/search";
+@use "hydeout/tags";
