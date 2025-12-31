@@ -1,0 +1,80 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface PageData {
+  data: CollectionEntry<'posts'>[];
+  currentPage: number;
+  lastPage: number;
+  url: {
+    prev: string | null;
+    next: string | null;
+  };
+}
+
+interface Props {
+  page: PageData;
+}
+
+const { page } = Astro.props;
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+---
+
+<BaseLayout title="Home" layout="index">
+  <div class="content">
+    {page.url.prev && (
+      <div class="pagination">
+        <a class="pagination-item newer" href={page.url.prev}>
+          Newer
+        </a>
+      </div>
+    )}
+    
+    <slot />
+    
+    {page.data.map((post) => (
+      <article class="post-body">
+        <h2 class="post-title">
+          <a href={`/${post.slug}/`}>{post.data.title}</a>
+        </h2>
+        <div class="post-meta">
+          {post.data.date && <span class="post-date">{formatDate(post.data.date)}</span>}
+          {post.data.categories && post.data.categories.length > 0 && (
+            <span class="post-categories">
+              {post.data.categories.map((category) => (
+                <>&bull; {category}</>
+              ))}
+            </span>
+          )}
+        </div>
+        
+        {post.data.excerpt ? (
+          <>
+            <p set:html={post.data.excerpt} />
+            <a href={`/${post.slug}/`}>More &hellip;</a>
+          </>
+        ) : (
+          <>
+            <p set:html={post.body?.slice(0, 500) + '...'} />
+            <a href={`/${post.slug}/`}>More &hellip;</a>
+          </>
+        )}
+      </article>
+    ))}
+    
+    {page.url.next && (
+      <div class="pagination">
+        <a class="pagination-item older" href={page.url.next}>
+          Older
+        </a>
+      </div>
+    )}
+  </div>
+</BaseLayout>

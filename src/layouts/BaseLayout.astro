@@ -1,0 +1,122 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  layout?: string;
+}
+
+const { title, description, layout = 'default' } = Astro.props;
+
+const siteTitle = 'Piranha Stories';
+const tagline = 'Short stories to brighten your day.';
+
+const pageTitle = title === 'Home' 
+  ? `${siteTitle} · ${tagline}` 
+  : `${title} · ${siteTitle}`;
+
+const metaDescription = description || `${tagline} ${siteTitle} - A collection of original short stories by Brian_AP.`;
+
+const isHome = Astro.url.pathname === '/';
+---
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link href="http://gmpg.org/xfn/11" rel="profile" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="description" content={metaDescription} />
+    
+    <title>{pageTitle}</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+    
+    <slot name="head" />
+  </head>
+  
+  <body class:list={[layout, { home: isHome }]}>
+    <div id="sidebar">
+      <slot name="sidebar">
+        <header>
+          <img 
+            class="logo" 
+            src="/assets/img/logo-min.png" 
+            alt="Piranha Stories logo" 
+            width="150" 
+            height="150" 
+          />
+          
+          {layout === 'index' ? (
+            <h1 class="site-title">
+              <a href="/">
+                {!isHome && <span class="back-arrow icon">←</span>}
+                {siteTitle}
+              </a>
+            </h1>
+          ) : (
+            <div class="site-title">
+              <a href="/">
+                {!isHome && <span class="back-arrow icon">←</span>}
+                {siteTitle}
+              </a>
+            </div>
+          )}
+          
+          <p class="lead">A collection of stories by <a href="//www.reddit.com/user/Brian_AP">Brian_AP</a></p>
+        </header>
+        
+        <nav id="sidebar-nav-links">
+          <a class="home-link" href="/">Home</a>
+          <a class="page-link" href="/about/">About</a>
+        </nav>
+        
+        <nav id="sidebar-icon-links">
+          <a id="subscribe-link" class="icon" href="/feed.xml" title="RSS Feed">
+            <svg fill="#000000" height="24px" width="24px" viewBox="0 0 455.731 455.731">
+              <path d="M0,0v455.731h455.731V0H0z M296.208,385.476c0-66.846-26.03-129.696-73.297-176.966
+                c-47.266-47.265-110.118-73.296-176.966-73.296V91.953c161.874,0,293.523,131.645,293.523,293.523H296.208z M176.78,385.476
+                c0-66.846-54.412-121.258-121.258-121.258v-43.261c90.673,0,164.519,73.844,164.519,164.519H176.78z M107.165,350.238
+                c0-19.494-15.809-35.303-35.303-35.303s-35.303,15.809-35.303,35.303s15.809,35.303,35.303,35.303
+                S107.165,369.732,107.165,350.238z"/>
+            </svg>
+          </a>
+          <a id="tags-link" class="icon" href="/tags/" title="Tags">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+              <path d="M12 2l10 10-10 10L2 12 12 2z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </a>
+          <a id="search-link" class="icon" href="/search/" title="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </a>
+        </nav>
+        
+        <p id="copyright">
+          &copy; 2024 Brian_AP.<br />
+          Powered by <a href="https://astro.build">Astro</a>.
+        </p>
+      </slot>
+    </div>
+    
+    <main class="container">
+      <slot />
+    </main>
+    
+    <slot name="footer" />
+  </body>
+</html>
